@@ -68,7 +68,7 @@ const ParkingSpotListing = ({ navigation, route }) => {
                 {`${item.city}, California, United States`}
               </CityText>
               <MapView
-                style={{ height: 200, width: "100%" }}
+                style={{ height: 200, width: "100%", marginBottom: 50 }}
                 initialRegion={item.coordinates}>
                 <Marker
                   coordinate={item.coordinates}

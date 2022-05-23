@@ -1,10 +1,11 @@
 import React from "react";
+import { Platform } from "react-native";
 import styled from "styled-components/native";
 
 const StyledImage = styled.Image`
-  height: 70px;
-  width: 70px;
-  border-radius: 40px;
+  ${(props) => (props.height ? `height: ${props.height}px` : `height:50px`)}
+  ${(props) => (props.width ? `width: ${props.width}px` : `width:50px`)}
+  border-radius: 50px;
 `;
 
 export const ProfileImage = (props) => {

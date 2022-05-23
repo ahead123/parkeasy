@@ -5,9 +5,9 @@ import { colors } from "../colors/colors";
 const { primary, black } = colors;
 
 const StyledText = styled.Text`
-  font-size: 25px;
   font-weight: 500;
-  margin-top: 10px;
+  ${(props) => (props.fs ? `font-size: ${props.fs}px` : `font-size: 25px`)}
+  ${(props) => (props.mt ? `margin-top: ${props.mt}px` : `margin-top: 10px`)}
   ${(props) => (props.color ? `color: ${props.color}` : `color: ${black}`)}
 `;
 
