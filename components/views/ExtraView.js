@@ -1,14 +1,13 @@
 import React from "react";
 import styled from "styled-components/native";
-import { colors } from "../colors/colors";
-
-const { white } = colors;
 
 const StyledView = styled.View`
-  flex: 1;
-  background-color: ${white};
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
 `;
 
-export const MainContainer = (props) => {
+export const ExtraView = (props) => {
   return <StyledView {...props}>{props.children}</StyledView>;
 };

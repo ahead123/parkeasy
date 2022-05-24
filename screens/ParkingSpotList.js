@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FlatList, Alert } from "react-native";
+
+import { CredentialsContext } from "../contexts/CredentialsContext";
 
 import { ParkingSpotListImageWrapper } from "../components/containers/ParkingSpotListImageWrapper";
 import { ParkingSpotListDetailsWrapper } from "../components/containers/ParkingSpotListDetailsWrapper";
 
 import { ParkingSpotListImage } from "../components/images/ParkingSpotListImage";
-import { ParkingSpotFavoriteIcon } from "../components/images/ParkingSpotFavoriteIcon";
+import { ParkingSpotFavoriteIcon } from "../components/icons/ParkingSpotFavoriteIcon";
 
 import { CityText } from "../components/texts/CityText";
 import { DescriptionText } from "../components/texts/DescriptionText";
@@ -18,6 +20,9 @@ import data from "../data/parkingSpots";
 
 const ParkingSpotList = ({ navigation }) => {
   const [parkingSpots, setParkingSpots] = useState(data);
+  const { storedCredentials, setStoredCredentials } =
+    useContext(CredentialsContext);
+  console.log("storedCredentials", storedCredentials);
 
   const toggleFavorite = (id) => {
     const newParkingSpots = parkingSpots.map((spot) => {

@@ -1,14 +1,13 @@
 import React from "react";
 import styled from "styled-components/native";
-import { colors } from "../colors/colors";
-
-const { white } = colors;
 
 const StyledView = styled.View`
-  flex: 1;
-  background-color: ${white};
+  left: 15px;
+  top: 38px;
+  position: absolute;
+  z-index: 100000;
 `;
 
-export const MainContainer = (props) => {
+export const LeftIcon = (props) => {
   return <StyledView {...props}>{props.children}</StyledView>;
 };

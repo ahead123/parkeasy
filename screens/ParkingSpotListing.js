@@ -28,7 +28,7 @@ const ParkingSpotListing = ({ navigation, route }) => {
         data={parkingSpot}
         renderItem={({ item }) => (
           <>
-            <BackArrow onPress={() => navigation.navigate("Park Easy")} />
+            <BackArrow onPress={() => navigation.navigate("Spotsy")} />
             <ImageBackground
               source={item.image_url}
               style={{ height: 250, width: "100%" }}

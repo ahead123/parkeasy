@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components/native";
 import { colors } from "../colors/colors";
+import { StatusBarHeight } from "../dimensions/dimensions";
 
 const { white } = colors;
 
 const StyledView = styled.View`
   flex: 1;
-  background-color: ${white};
+  width: 100%;
+  align-items: center;
 `;
 
-export const MainContainer = (props) => {
+export const InnerContainer = (props) => {
   return <StyledView {...props}>{props.children}</StyledView>;
 };

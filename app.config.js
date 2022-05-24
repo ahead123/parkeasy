@@ -30,7 +30,15 @@ export default {
       favicon: "./assets/favicon.png",
     },
     extra: {
+      apiKey: process.env.apiKey,
+      authDomain: process.env.authDomain,
+      projectId: process.env.projectId,
+      storageBucket: process.env.storageBucket,
+      messagingSenderId: process.env.messagingSenderId,
+      appId: process.env.appId,
+      measurementId: process.env.measurementId,
       GOOGLE_PLACES_API_KEY: process.env.GOOGLE_PLACES_API_KEY,
+      spotsyCredentials: process.env.spotsyCredentials,
     },
   },
 };
