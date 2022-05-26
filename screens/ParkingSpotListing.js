@@ -1,12 +1,22 @@
-import React from "react";
-import { FlatList, ImageBackground, View, Pressable, Text } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import {
+  FlatList,
+  ImageBackground,
+  View,
+  Pressable,
+  Text,
+  Alert,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
-
+import { useStripe } from "@stripe/stripe-react-native";
+import { CredentialsContext } from "../contexts/CredentialsContext";
+import { Constants } from "expo-constants";
 import { BackArrow } from "../components/buttons/BackArrow";
 import { TitleText } from "../components/texts/TitleText";
 
 import { ScreenWidth, ScreenHeight } from "../components/dimensions/dimensions";
+import { Platform } from "react-native";
 import { CityText } from "../components/texts/CityText";
 import { Line } from "../components/styles/Line";
 import { DescriptionText } from "../components/texts/DescriptionText";
@@ -19,8 +29,85 @@ import { PriceText } from "../components/texts/PriceText";
 const { black, white, darkGray, secondary } = colors;
 
 const ParkingSpotListing = ({ navigation, route }) => {
+  const { storedCredentials, setStoredCredentials } =
+    useContext(CredentialsContext);
+
   const { parkingSpot } = route.params;
   console.log(parkingSpot);
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const [loading, setLoading] = useState(false);
+
+  const amount = parseInt(parkingSpot[0].price * 100);
+  const fetchPaymentSheetParams = async () => {
+    const API_URL =
+      Platform.OS === "ios" ? "http://127.0.0.1:3000" : "http://10.0.2.2:3000";
+    try {
+      const response = await fetch(`${API_URL}/payment-sheet`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.STRIPE_SECRET_TEST_KEY}`,
+        },
+        body: JSON.stringify({
+          email: storedCredentials.email,
+          amount,
+        }),
+      });
+
+      const { paymentIntent, ephemeralKey, customer, publishableKey } =
+        await response.json();
+      console.log("paymentIntent", paymentIntent);
+      console.log("ephemeralKey", ephemeralKey);
+      console.log("customer", customer);
+      return {
+        paymentIntent,
+        ephemeralKey,
+        customer,
+        publishableKey,
+      };
+    } catch (error) {
+      console.log(error);
+      return { error };
+    }
+  };
+
+  const initializePaymentSheet = async () => {
+    const { paymentIntent, ephemeralKey, customer, publishableKey } =
+      await fetchPaymentSheetParams();
+
+    const { error } = await initPaymentSheet({
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+      merchantDisplayName: "Spotsy",
+      // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
+      //methods that complete payment after a delay, like SEPA Debit and Sofort.
+      allowsDelayedPaymentMethods: true,
+    });
+    if (!error) {
+      setLoading(true);
+    }
+  };
+
+  const openPaymentSheet = async () => {
+    // see below
+    const { error } = await presentPaymentSheet();
+    if (error) {
+      console.log(
+        `Error code: ${error.code}`,
+        `Error message: ${error.message}`
+      );
+      Alert.alert(error.message);
+    } else {
+      Alert.alert("Success", "Your order is confirmed!");
+    }
+  };
+
+  useEffect(() => {
+    initializePaymentSheet();
+  }, []);
+
   return (
     <>
       <FlatList
@@ -95,6 +182,7 @@ const ParkingSpotListing = ({ navigation, route }) => {
         }}>
         <PriceText>{`$${parkingSpot[0].price} per hour`}</PriceText>
         <Pressable
+          onPress={openPaymentSheet}
           style={{
             backgroundColor: secondary,
             height: 50,

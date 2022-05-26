@@ -39,6 +39,8 @@ export default {
       measurementId: process.env.measurementId,
       GOOGLE_PLACES_API_KEY: process.env.GOOGLE_PLACES_API_KEY,
       spotsyCredentials: process.env.spotsyCredentials,
+      STRIPE_PUBLISHABLE_TEST_KEY: process.env.STRIPE_PUBLISHABLE_TEST_KEY,
+      STRIPE_SECRET_TEST_KEY: process.env.STRIPE_SECRET_TEST_KEY,
     },
   },
 };
