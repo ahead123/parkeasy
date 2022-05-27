@@ -40,9 +40,10 @@ const ParkingSpotListing = ({ navigation, route }) => {
   const amount = parseInt(parkingSpot[0].price * 100);
   const fetchPaymentSheetParams = async () => {
     const API_URL =
-      Platform.OS === "ios" ? "http://127.0.0.1:3000" : "http://10.0.2.2:3000";
+      "https://us-central1-dryvwaze.cloudfunctions.net/createStripePaymentSheet";
+    // Platform.OS === "ios" ? "http://127.0.0.1:3000" : "http://10.0.2.2:3000";
     try {
-      const response = await fetch(`${API_URL}/payment-sheet`, {
+      const response = await fetch(`${API_URL}`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -145,7 +146,16 @@ const ParkingSpotListing = ({ navigation, route }) => {
                   alignItems: "center",
                 }}>
                 <TitleText>{`Hosted by ${item.host}`}</TitleText>
-                <ProfileImage source={item.profile_image_url} />
+                <Pressable
+                  onPress={async () => {
+                    let data = await fetch(
+                      "https://us-central1-dryvwaze.cloudfunctions.net/helloWorld"
+                    );
+                    let response = await data.json();
+                    console.log(response);
+                  }}>
+                  <ProfileImage source={item.profile_image_url} />
+                </Pressable>
               </View>
               <Line mt={30} mb={30} />
               <DescriptionText color={black} fs={25}>

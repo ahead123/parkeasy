@@ -41,6 +41,8 @@ export default {
       spotsyCredentials: process.env.spotsyCredentials,
       STRIPE_PUBLISHABLE_TEST_KEY: process.env.STRIPE_PUBLISHABLE_TEST_KEY,
       STRIPE_SECRET_TEST_KEY: process.env.STRIPE_SECRET_TEST_KEY,
+      STRIPE_CREATE_PAYMENT_SHEET_FIREBASE_CLOUD_FUNCTION_URL:
+        process.env.STRIPE_CREATE_PAYMENT_SHEET_FIREBASE_CLOUD_FUNCTION_URL,
     },
   },
 };
