@@ -13,14 +13,10 @@ const StyledButton = styled.TouchableOpacity`
   margin-vertical: 5px;
   height: 60px;
   align-items: center;
-
   ${(props) =>
-    props.google === true &&
-    `
-        background-color: ${green};
-        flex-direction: row;
-        justify-content: center;
-    `}
+    props.backgroundColor
+      ? `background-color: ${props.backgroundColor}`
+      : `background-color: ${primary}`}
 `;
 
 export const FormButton = (props) => {

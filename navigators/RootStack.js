@@ -1,8 +1,13 @@
-import React, { useContext } from "react";
-import { NavigationContainer, useIsFocused } from "@react-navigation/native";
+import React, { useContext, useEffect } from "react";
+import {
+  NavigationContainer,
+  useIsFocused,
+  useNavigation,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { Pressable } from "react-native";
 
 import { CredentialsContext } from "../contexts/CredentialsContext";
 
@@ -16,14 +21,16 @@ import { colors } from "../components/colors/colors";
 import PaymentScreen from "../screens/PaymentScreen";
 import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
+import SearchScreen from "../screens/SearchScreen";
 
-const { primary, darkGrey, secondary } = colors;
+const { primary, darkGrey, secondary, white } = colors;
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
 const AppStack = () => {
   const { storedCredentials } = useContext(CredentialsContext);
+
   return (
     <BottomTab.Navigator
       initialRouteName="Parking Spots"
@@ -31,11 +38,12 @@ const AppStack = () => {
         tabBarStyle: {
           height: 65,
           paddingBottom: 5,
+          backgroundColor: primary,
         },
         tabBarLabelStyle: {
           fontSize: 10,
           fontWeight: "300",
-          color: darkGrey,
+          color: white,
           justifyContent: "center",
           alignItems: "center",
         },
@@ -50,13 +58,14 @@ const AppStack = () => {
             return (
               <Ionicons
                 name="car-outline"
-                color={isFocused ? secondary : primary}
+                color={isFocused ? secondary : white}
                 size={40}
               />
             );
           },
         }}
       />
+
       {storedCredentials === null ? (
         <BottomTab.Screen
           name="More Info"
@@ -68,7 +77,7 @@ const AppStack = () => {
               return (
                 <Ionicons
                   name="information-circle-outline"
-                  color={isFocused ? secondary : primary}
+                  color={isFocused ? secondary : white}
                   size={40}
                 />
               );
@@ -86,7 +95,7 @@ const AppStack = () => {
               return (
                 <Ionicons
                   name="person-circle-outline"
-                  color={isFocused ? secondary : primary}
+                  color={isFocused ? secondary : white}
                   size={40}
                 />
               );
@@ -100,6 +109,7 @@ const AppStack = () => {
 
 const RootStack = () => {
   const { storedCredentials } = useContext(CredentialsContext);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
@@ -122,8 +132,22 @@ const RootStack = () => {
             />
             <Stack.Screen
               name="Spotsy"
-              options={{ headerTitleAlign: "center" }}
+              options={{
+                headerTitleAlign: "center",
+                headerTitleStyle: {
+                  color: white,
+                },
+                headerStyle: {
+                  backgroundColor: primary,
+                },
+                headerTintColor: white,
+              }}
               component={AppStack}
+            />
+            <Stack.Screen
+              name="Search"
+              component={SearchScreen}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Parking Spot Listing"
@@ -139,8 +163,22 @@ const RootStack = () => {
         ) : (
           <>
             <Stack.Screen
+              name="Search"
+              component={SearchScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="Spotsy"
-              options={{ headerTitleAlign: "center" }}
+              options={{
+                headerTitleAlign: "center",
+                headerTitleStyle: {
+                  color: white,
+                },
+                headerStyle: {
+                  backgroundColor: primary,
+                },
+                headerTintColor: white,
+              }}
               component={AppStack}
             />
             <Stack.Screen

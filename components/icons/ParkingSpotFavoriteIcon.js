@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../colors/colors";
 
-const { black, white, red } = colors;
+const { black, white, secondary } = colors;
 
 const StyledIcon = styled(Ionicons)`
   position: absolute;
@@ -18,7 +18,7 @@ export const ParkingSpotFavoriteIcon = (props) => {
       <StyledIcon
         name={props.is_favorite ? "heart" : "heart-outline"}
         size={40}
-        color={props.is_favorite ? red : white}
+        color={props.is_favorite ? secondary : white}
         {...props}
       />
     </TouchableOpacity>

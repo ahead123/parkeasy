@@ -51,7 +51,7 @@ const ParkingSpotListing = ({ navigation, route }) => {
           Authorization: `Bearer ${process.env.STRIPE_SECRET_TEST_KEY}`,
         },
         body: JSON.stringify({
-          email: storedCredentials.email,
+          email: storedCredentials?.email,
           amount,
         }),
       });
@@ -92,6 +92,7 @@ const ParkingSpotListing = ({ navigation, route }) => {
   };
 
   const openPaymentSheet = async () => {
+    await initializePaymentSheet();
     // see below
     const { error } = await presentPaymentSheet();
     if (error) {
@@ -105,10 +106,6 @@ const ParkingSpotListing = ({ navigation, route }) => {
     }
   };
 
-  useEffect(() => {
-    initializePaymentSheet();
-  }, []);
-
   return (
     <>
       <FlatList
@@ -116,7 +113,7 @@ const ParkingSpotListing = ({ navigation, route }) => {
         data={parkingSpot}
         renderItem={({ item }) => (
           <>
-            <BackArrow onPress={() => navigation.navigate("Spotsy")} />
+            <BackArrow onPress={() => navigation.goBack()} />
             <ImageBackground
               source={item.image_url}
               style={{ height: 250, width: "100%" }}
@@ -191,18 +188,33 @@ const ParkingSpotListing = ({ navigation, route }) => {
           padding: 20,
         }}>
         <PriceText>{`$${parkingSpot[0].price} per hour`}</PriceText>
-        <Pressable
-          onPress={openPaymentSheet}
-          style={{
-            backgroundColor: secondary,
-            height: 50,
-            width: 120,
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 10,
-          }}>
-          <Text style={{ color: white }}>Reserve</Text>
-        </Pressable>
+        {storedCredentials?.email !== undefined ? (
+          <Pressable
+            onPress={openPaymentSheet}
+            style={{
+              backgroundColor: secondary,
+              height: 50,
+              width: 120,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 10,
+            }}>
+            <Text style={{ color: white }}>Reserve</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => navigation.navigate("Login")}
+            style={{
+              backgroundColor: secondary,
+              height: 50,
+              width: 150,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 10,
+            }}>
+            <Text style={{ color: white }}>Login to reserve</Text>
+          </Pressable>
+        )}
       </View>
     </>
   );

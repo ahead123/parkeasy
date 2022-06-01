@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { FlatList, Alert } from "react-native";
+import { FlatList, Alert, View } from "react-native";
 
 import { CredentialsContext } from "../contexts/CredentialsContext";
 
@@ -18,15 +18,19 @@ import { FloatingMapButton } from "../components/buttons/FloatingMapButton";
 
 import data from "../data/parkingSpots";
 
+import { colors } from "../components/colors/colors";
+
+const { white } = colors;
+
 const ParkingSpotList = ({ navigation }) => {
   const [parkingSpots, setParkingSpots] = useState(data);
   const { storedCredentials, setStoredCredentials } =
     useContext(CredentialsContext);
   console.log("storedCredentials", storedCredentials);
 
-  const toggleFavorite = (id) => {
+  const toggleFavorite = (listing_id) => {
     const newParkingSpots = parkingSpots.map((spot) => {
-      if (spot.id === id) {
+      if (spot.listing_id === listing_id) {
         return { ...spot, is_favorite: !spot.is_favorite };
       }
       return spot;
@@ -36,7 +40,7 @@ const ParkingSpotList = ({ navigation }) => {
 
   return (
     <>
-      <FloatingMapButton onPress={() => Alert.alert("Map")} />
+      <FloatingMapButton onPress={() => navigation.navigate("Search")} />
       <FlatList
         style={{
           width: ScreenWidth * 0.9,
@@ -50,25 +54,25 @@ const ParkingSpotList = ({ navigation }) => {
               onRouteChange={() =>
                 navigation.navigate("Parking Spot Listing", {
                   parkingSpot: parkingSpots.filter(
-                    (spot) => spot.id === item.id
+                    (spot) => spot.listing_id === item.listing_id
                   ),
                 })
               }>
               <ParkingSpotListImage source={item.image_url} borderRadius={10}>
                 <ParkingSpotFavoriteIcon
                   is_favorite={item.is_favorite}
-                  onPress={() => toggleFavorite(item.id)}
+                  onPress={() => toggleFavorite(item.listing_id)}
                 />
               </ParkingSpotListImage>
             </ParkingSpotListImageWrapper>
             <ParkingSpotListDetailsWrapper>
               <CityText>{`${item.city}, California`}</CityText>
               <DescriptionText>{item.highlight}</DescriptionText>
-              <PriceText>{`$${item.price} per hour`}</PriceText>
+              <PriceText>{`$${item.price} per day`}</PriceText>
             </ParkingSpotListDetailsWrapper>
           </>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.listing_id}
       />
     </>
   );

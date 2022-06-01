@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Pressable, Text, View, ActivityIndicator, Alert } from "react-native";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 
@@ -15,7 +15,7 @@ import { ButtonText } from "../components/texts/ButtonText";
 
 import { colors } from "../components/colors/colors";
 
-const { white, secondary } = colors;
+const { white, secondary, primary } = colors;
 
 const ProfileScreen = ({ navigation }) => {
   const { storedCredentials, setStoredCredentials } =
@@ -32,6 +32,7 @@ const ProfileScreen = ({ navigation }) => {
         setStoredCredentials(null);
         await AsyncStorage.removeItem("spotsyCredentials");
         Alert.alert("Logged Out", "You have been logged out");
+        navigation.navigate("Login");
       }, 2000);
     } catch (error) {
       console.log("error signing out", error);
@@ -141,7 +142,7 @@ const ProfileScreen = ({ navigation }) => {
             size={30}
             style={{ marginRight: 20 }}
           />
-          <Text style={{ fontSize: 18 }}>How ParkEasy Works</Text>
+          <Text style={{ fontSize: 18 }}>How Spotsy Works</Text>
           <Entypo
             name="chevron-small-right"
             size={30}
@@ -181,13 +182,16 @@ const ProfileScreen = ({ navigation }) => {
       {storedCredentials && (
         <View style={{ alignItems: "center" }}>
           {isLoading && (
-            <FullWidthButton backgroundColor={secondary}>
+            <FullWidthButton
+              backgroundColor={secondary}
+              borderColor={secondary}>
               <ActivityIndicator size="large" color={white} />
             </FullWidthButton>
           )}
           {!isLoading && (
             <FullWidthButton
               backgroundColor={secondary}
+              borderColor={secondary}
               onPress={handleSignOut}>
               <ButtonText>Logout</ButtonText>
             </FullWidthButton>
@@ -197,7 +201,8 @@ const ProfileScreen = ({ navigation }) => {
       {storedCredentials === null && (
         <View style={{ alignItems: "center", marginTop: 20 }}>
           <FullWidthButton
-            backgroundColor={secondary}
+            backgroundColor={primary}
+            borderColor={primary}
             onPress={() => navigation.navigate("Signup")}>
             <ButtonText>Register</ButtonText>
           </FullWidthButton>

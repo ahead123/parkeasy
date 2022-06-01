@@ -115,7 +115,7 @@ const LoginScreen = ({ navigation }) => {
     <MainContainer>
       <BackArrow onPress={() => navigation.navigate("Home")} />
       <ImageBackground
-        source={require("../assets/images/car-driveway-3.png")}
+        source={require("../assets/images/suburb-driveway.png")}
         resizeMode="cover"
         style={{
           width: ScreenWidth,
@@ -123,16 +123,17 @@ const LoginScreen = ({ navigation }) => {
           justifyContent: "center",
         }}>
         <Image
-          source={require("../assets/images/parkeasy-logo.png")}
+          source={require("../assets/images/spotsy-logo.png")}
           style={{
             height: 60,
             width: 60,
             borderRadius: 80 / 2,
             position: "absolute",
             top: ScreenHeight * 0.36,
-            left: ScreenWidth * 0.43,
+            left: ScreenWidth * 0.42,
             borderColor: primary,
             borderWidth: 2,
+            zIndex: 1,
           }}
         />
       </ImageBackground>
@@ -140,9 +141,9 @@ const LoginScreen = ({ navigation }) => {
         <InnerContainer>
           <TitleText
             style={{ marginTop: 40, marginBottom: 20 }}
-            fs={30}
+            fs={20}
             color={primary}>
-            Spotsy Login
+            Login
           </TitleText>
           <Formik
             initialValues={{ email: "", password: "" }}
@@ -196,37 +197,21 @@ const LoginScreen = ({ navigation }) => {
                   setHidePassword={setHidePassword}
                 />
                 {isSubmitting && (
-                  <FormButton disabled={true}>
+                  <FormButton backgroundColor={primary} disabled={true}>
                     <ActivityIndicator size="large" color={white} />
                   </FormButton>
                 )}
                 {!isSubmitting && (
-                  <FormButton onPress={handleSubmit}>
+                  <FormButton backgroundColor={primary} onPress={handleSubmit}>
                     <ButtonText>Sign in</ButtonText>
                   </FormButton>
                 )}
-                <Line />
-                {isGoogleSubmitting && (
-                  <FormButton google={true} disabled={true}>
-                    <ActivityIndicator size="large" color={primary} />
-                  </FormButton>
-                )}
-                {!isGoogleSubmitting && (
-                  <FormButton
-                    google={true}
-                    onPress={() => {
-                      setIsGoogleSignIn(true);
-                      setIsGoogleSubmitting(true);
-                      handleGoogleLogin();
-                    }}>
-                    <Fontisto name="google" size={25} color={primary} />
-                    <ButtonText google={true}>Sign in with Google</ButtonText>
-                  </FormButton>
-                )}
+
                 <ExtraView>
-                  <ExtraText>Don't have an account? </ExtraText>
+                  <ExtraText color={primary}>Don't have an account? </ExtraText>
                   <TextLink>
                     <TextLinkContent
+                      color={primary}
                       onPress={() => navigation.navigate("Signup")}>
                       Sign up
                     </TextLinkContent>

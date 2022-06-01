@@ -2,14 +2,14 @@ import "dotenv/config";
 
 export default {
   expo: {
-    name: "parkeasy",
-    slug: "parkeasy",
+    name: "spotsy",
+    slug: "spotsy",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
     splash: {
-      image: "./assets/images/parkeasy-logo.png",
+      image: "./assets/images/spotsy-logo.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff",
     },

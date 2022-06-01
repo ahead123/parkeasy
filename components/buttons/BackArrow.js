@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { ScreenWidth, ScreenHeight } from "../dimensions/dimensions";
 import { colors } from "../colors/colors";
 
-const { white, black } = colors;
+const { white, primary } = colors;
 
 const StyledButton = styled.Pressable`
   background-color: ${white};
@@ -26,7 +26,7 @@ export const BackArrow = (props) => {
     <StyledButton {...props} onPress={props.onPress}>
       <Ionicons
         name="md-arrow-back"
-        color={colors.black}
+        color={primary}
         size={ScreenHeight * 0.02}
       />
     </StyledButton>

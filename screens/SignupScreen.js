@@ -47,7 +47,7 @@ import { RightIcon } from "../components/icons/RightIcon";
 import { ScreenWidth, ScreenHeight } from "../components/dimensions/dimensions";
 import { colors } from "../components/colors/colors";
 
-const { primary, lightGrey, white, secondary, darkGrey } = colors;
+const { primary, lightGrey, teritary, white, secondary, darkGrey } = colors;
 
 const UserSignupSchema = Yup.object().shape({
   fullName: Yup.string()
@@ -145,7 +145,7 @@ const SignupScreen = ({ navigation }) => {
     <MainContainer>
       <BackArrow onPress={() => navigation.navigate("Home")} />
       <ImageBackground
-        source={require("../assets/images/car-driveway-2.png")}
+        source={require("../assets/images/car-house-driveway.png")}
         resizeMode="cover"
         style={{
           width: ScreenWidth,
@@ -153,26 +153,27 @@ const SignupScreen = ({ navigation }) => {
           justifyContent: "center",
         }}>
         <Image
-          source={require("../assets/images/parkeasy-logo.png")}
+          source={require("../assets/images/spotsy-logo.png")}
           style={{
             height: 45,
             width: 45,
             borderRadius: 80 / 2,
             position: "absolute",
             top: ScreenHeight * 0.17,
-            left: ScreenWidth * 0.43,
+            left: ScreenWidth * 0.44,
             borderColor: primary,
             borderWidth: 2,
+            zIndex: 1,
           }}
         />
       </ImageBackground>
       <KeyboardAvoidingContainer>
         <InnerContainer style={{ marginBottom: 30 }}>
           <TitleText
-            style={{ marginTop: 20, marginBottom: 10 }}
-            fs={30}
+            style={{ marginTop: 30, marginBottom: 10 }}
+            fs={20}
             color={primary}>
-            Spotsy Signup
+            Signup
           </TitleText>
           <Formik
             initialValues={{
@@ -283,20 +284,23 @@ const SignupScreen = ({ navigation }) => {
                   setHidePassword={setHidePassword}
                 />
                 {!isSubmitting && (
-                  <FormButton onPress={handleSubmit}>
+                  <FormButton backgroundColor={primary} onPress={handleSubmit}>
                     <ButtonText>Register</ButtonText>
                   </FormButton>
                 )}
                 {isSubmitting && (
-                  <FormButton disabled={true}>
-                    <ActivityIndicator size="large" color={primary} />
+                  <FormButton backgroundColor={primary} disabled={true}>
+                    <ActivityIndicator size="large" color={white} />
                   </FormButton>
                 )}
-                <Line />
+
                 <ExtraView>
-                  <ExtraText>Already have an account? </ExtraText>
+                  <ExtraText color={primary}>
+                    Already have an account?{" "}
+                  </ExtraText>
                   <TextLink>
                     <TextLinkContent
+                      color={primary}
                       onPress={() => navigation.navigate("Login")}>
                       Login
                     </TextLinkContent>

@@ -10,8 +10,10 @@ const StyledButton = styled.Pressable`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+
   ${(props) =>
     props.backgroundColor && `background-color: ${props.backgroundColor}`}
+  ${(props) => props.borderColor && `border-color: ${props.borderColor}`}
 `;
 
 export const FullWidthButton = (props) => {

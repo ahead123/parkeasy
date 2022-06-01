@@ -5,8 +5,8 @@ import { colors } from "../colors/colors";
 const { primary } = colors;
 
 const StyledText = styled.Text`
-  color: ${primary};
   font-size: 15px;
+  ${(props) => (props.color ? `color: ${props.color}` : `color: ${primary}`)}
 `;
 
 export const TextLinkContent = (props) => {

@@ -18,7 +18,7 @@ const { black, white, primary } = colors;
 
 const StyledButton = styled.Pressable`
   position: absolute;
-  top: ${ScreenHeight * 0.48}px;
+  top: ${ScreenHeight * 0.72}px;
   left: ${ScreenWidth * 0.4}px;
   height: 40px;
   width: 80px;
@@ -43,11 +43,11 @@ const StyledText = styled(SmallText)`
   font-size: 10px;
 `;
 
-export const FloatingMapButton = (props) => {
+export const FloatingListButton = (props) => {
   return (
     <StyledButton {...props} onPress={props.onPress}>
-      <StyledIcon name="map-outline" color={white} size={17} />
-      <StyledText color={white}>Map</StyledText>
+      <StyledIcon name="list-outline" color={white} size={17} />
+      <StyledText color={white}>List</StyledText>
     </StyledButton>
   );
 };

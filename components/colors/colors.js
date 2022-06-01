@@ -1,8 +1,8 @@
 export const colors = {
-  primary: "#34495e",
-  secondary: "#5E3449",
-  teritary: "#495E34",
-  accent: "#345E34",
+  primary: "#0067F1",
+  secondary: "#FF1616",
+  teritary: "#F76E7C",
+  accent: "#f1e200",
   lightGrey: "#ecf0f1",
   darkGrey: "#7f8c8d",
   white: "#fff",

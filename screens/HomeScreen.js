@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ImageBackground, Image } from "react-native";
+import { ImageBackground, Image, View } from "react-native";
 
 import { MainContainer } from "../components/containers/MainContainer";
 import { InnerContainer } from "../components/containers/InnerContainer";
@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <MainContainer>
       <ImageBackground
-        source={require("../assets/images/car-driveway-1.png")}
+        source={require("../assets/images/car-house-driveway.png")}
         resizeMode="cover"
         style={{
           width: ScreenWidth,
@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
           justifyContent: "center",
         }}>
         <Image
-          source={require("../assets/images/parkeasy-logo.png")}
+          source={require("../assets/images/spotsy-logo.png")}
           style={{
             height: 80,
             width: 80,
@@ -35,21 +35,26 @@ const HomeScreen = ({ navigation }) => {
             left: ScreenWidth * 0.4,
             borderColor: primary,
             borderWidth: 2,
+            zIndex: 1,
           }}
         />
       </ImageBackground>
       <InnerContainer>
-        <BigText style={{ marginTop: 30 }}>Spotsy</BigText>
-        <FullWidthButton onPress={() => navigation.navigate("Spotsy")}>
-          <SmallText>See nearby parking</SmallText>
+        <View style={{ marginTop: 60 }}></View>
+        <FullWidthButton
+          borderColor={primary}
+          onPress={() => navigation.navigate("Spotsy")}>
+          <SmallText color={primary}>See nearby parking</SmallText>
         </FullWidthButton>
         <FullWidthButton
-          backgroundColor={teritary}
+          backgroundColor={primary}
+          borderColor={primary}
           onPress={() => navigation.navigate("Login")}>
           <SmallText color={white}>Login</SmallText>
         </FullWidthButton>
         <FullWidthButton
           backgroundColor={secondary}
+          borderColor={secondary}
           onPress={() => navigation.navigate("Signup")}>
           <SmallText color={white}>Register</SmallText>
         </FullWidthButton>
