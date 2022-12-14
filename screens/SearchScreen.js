@@ -20,6 +20,7 @@ import { BackArrow } from "../components/buttons/BackArrow";
 import { colors } from "../components/colors/colors";
 
 import data from "../data/parkingSpots";
+import { SafeAreaInsetsContext } from "react-native-safe-area-context";
 
 const { white, black, secondary, primary } = colors;
 
@@ -28,6 +29,7 @@ const SearchScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [selected, setSelected] = useState(null);
+  console.log("selected", selected);
   const [region, setRegion] = useState({
     latitude: 33.8622,
     longitude: -118.3995,
@@ -49,13 +51,16 @@ const SearchScreen = ({ navigation }) => {
   const viewConfig = useRef({
     itemVisiblePercentThreshold: 70,
   });
+  const googRef = useRef();
   const onViewChanged = useRef(({ viewableItems }) => {
-    console.log("viewableItems", viewableItems);
-    if (viewableItems?.length > 0) {
+    // console.log("viewableItems", viewableItems);
+    if (viewableItems.length > 0) {
       const selectedListing = viewableItems[0].item;
+
       setSelected(selectedListing.listing_id);
     }
   });
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -73,6 +78,12 @@ const SearchScreen = ({ navigation }) => {
       //   latitudeDelta: 0.04,
       //   longitudeDelta: 0.05,
       // });
+      if (mapRef.current) {
+        // list of spot listing id's must same that has been provided to the identifier props of the Marker
+        mapRef.current.fitToSuppliedMarkers(
+          parkingSpots.map((spot) => spot.listing_id)
+        );
+      }
     })();
   }, []);
 
@@ -80,22 +91,23 @@ const SearchScreen = ({ navigation }) => {
     if (!selected || !flatlist) {
       return;
     }
+    let index = parkingSpots.findIndex((spot) => spot.listing_id === selected);
+    if (selected === parkingSpots.length) {
+      index = parkingSpots.length - 1;
+    }
 
-    const index = parkingSpots.findIndex(
-      (spot) => spot.listing_id === selected
-    );
-    flatlist.current.scrollToIndex({ index });
-    setTimeout(() => {
-      if (mapRef.current) {
-        // list of spot listing id's must same that has been provided to the identifier props of the Marker
-        mapRef.current.fitToSuppliedMarkers(
-          parkingSpots.map((spot) => spot.listing_id),
-          {
-            edgePadding: { top: 10, right: 50, bottom: 10, left: 50 },
-          }
-        );
-      }
-    }, 1000);
+    const selectedListing = parkingSpots[index];
+    const region = {
+      latitude: selectedListing.coordinates.latitude,
+      longitude: selectedListing.coordinates.longitude,
+      latitudeDelta: 0.5,
+      longitudeDelta: 0.4,
+    };
+    //setRegion(region);
+    mapRef.current.animateToRegion(region, 1000);
+    flatlist.current.scrollToIndex({
+      index,
+    });
   }, [selected]);
 
   return (
@@ -114,18 +126,23 @@ const SearchScreen = ({ navigation }) => {
           alignSelf: "center",
         }}>
         <GooglePlacesAutocomplete
+          ref={googRef}
           placeholder="Search by city, address or zip code"
           nearbyPlacesAPI="GooglePlacesSearch"
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
-            console.log(data, details);
+            console.log("details", details);
+            //console.log("details", details?.address_components[0]?.long_name);
+            //console.log("details", details?.geometry.location);
           }}
+          clearButtonMode="always"
           fetchDetails={true}
           returnKeyType={"search"}
           GooglePlacesSearchQuery={{
             rankby: "distance",
             types: "city",
           }}
+          listViewDisplayed="auto"
           styles={{
             container: {
               flex: 1,
@@ -140,6 +157,7 @@ const SearchScreen = ({ navigation }) => {
               borderBottomWidth: 0,
             },
           }}
+          textInputProps={{}}
           onFail={(error) => console.error(error)}
           debounce={400}
           query={{
@@ -151,6 +169,11 @@ const SearchScreen = ({ navigation }) => {
       </View>
       <FloatingListButton onPress={() => navigation.navigate("Spotsy")} />
       <MapView
+        onMarkerPress={(event) => {
+          event.stopPropagation();
+          console.log("onMarkerPressEvent", event.nativeEvent.id);
+          setSelected(event.nativeEvent.id);
+        }}
         ref={mapRef}
         initialRegion={region}
         style={{
@@ -166,13 +189,12 @@ const SearchScreen = ({ navigation }) => {
         />
         {parkingSpots.map((spot) => (
           <Marker
-            key={spot.listing_id}
-            identifier={spot.listing_id}
+            key={spot.listing_id.toString()}
+            identifier={spot.listing_id.toString()}
             coordinate={{
               latitude: spot.coordinates.latitude,
               longitude: spot.coordinates.longitude,
-            }}
-            onPress={() => setSelected(spot.listing_id)}>
+            }}>
             <View
               style={{
                 backgroundColor: selected === spot.listing_id ? black : white,
@@ -204,7 +226,12 @@ const SearchScreen = ({ navigation }) => {
           ref={flatlist}
           horizontal={true}
           data={parkingSpots}
-          snapToInterval={ScreenWidth * 0.9}
+          snapToInterval={365}
+          getItemLayout={(data, index) => ({
+            length: 130,
+            offset: index * 365,
+            index,
+          })}
           showsHorizontalScrollIndicator={false}
           snapToAlignment="center"
           decelerationRate={"fast"}
@@ -212,15 +239,24 @@ const SearchScreen = ({ navigation }) => {
           onViewableItemsChanged={onViewChanged.current}
           keyExtractor={(item) => item.listing_id}
           renderItem={({ item }) => (
-            <>
+            <View
+              style={{
+                width: ScreenWidth - 60,
+                height: 130,
+                flexDirection: "row",
+                marginRight: 10,
+                flex: 1,
+                justifyContent: "space-between",
+              }}>
               <Pressable
-                onPress={() =>
+                onPress={(event) => {
+                  event.stopPropagation();
                   navigation.navigate("Parking Spot Listing", {
                     parkingSpot: parkingSpots.filter(
                       (spot) => spot.listing_id === item.listing_id
                     ),
-                  })
-                }>
+                  });
+                }}>
                 <View
                   style={{
                     width: 335,
@@ -251,7 +287,7 @@ const SearchScreen = ({ navigation }) => {
                   </ParkingSpotListDetailsWrapper>
                 </View>
               </Pressable>
-            </>
+            </View>
           )}
         />
       </View>

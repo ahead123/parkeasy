@@ -12,7 +12,7 @@ import { Pressable } from "react-native";
 import { CredentialsContext } from "../contexts/CredentialsContext";
 
 import HomeScreen from "../screens/HomeScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import MenuScreen from "../screens/MenuScreen";
 
 import ParkingSpotList from "../screens/ParkingSpotList";
 import ParkingSpotListing from "../screens/ParkingSpotListing";
@@ -22,6 +22,7 @@ import PaymentScreen from "../screens/PaymentScreen";
 import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
 import SearchScreen from "../screens/SearchScreen";
+import NewSpotsyListingScreen from "../screens/NewSpotsyListingScreen";
 
 const { primary, darkGrey, secondary, white } = colors;
 
@@ -69,7 +70,7 @@ const AppStack = () => {
       {storedCredentials === null ? (
         <BottomTab.Screen
           name="More Info"
-          component={ProfileScreen}
+          component={MenuScreen}
           options={{
             headerShown: false,
             tabBarIcon: () => {
@@ -86,15 +87,15 @@ const AppStack = () => {
         />
       ) : (
         <BottomTab.Screen
-          name="Profile"
-          component={ProfileScreen}
+          name="Menu"
+          component={MenuScreen}
           options={{
             headerShown: false,
             tabBarIcon: () => {
               let isFocused = useIsFocused();
               return (
                 <Ionicons
-                  name="person-circle-outline"
+                  name="menu-outline"
                   color={isFocused ? secondary : white}
                   size={40}
                 />
@@ -189,6 +190,11 @@ const RootStack = () => {
             <Stack.Screen
               name="Payment Methods"
               component={PaymentScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="New Spotsy Listing"
+              component={NewSpotsyListingScreen}
               options={{ headerShown: false }}
             />
           </>

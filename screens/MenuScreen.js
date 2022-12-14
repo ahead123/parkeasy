@@ -17,7 +17,7 @@ import { colors } from "../components/colors/colors";
 
 const { white, secondary, primary } = colors;
 
-const ProfileScreen = ({ navigation }) => {
+const MenuScreen = ({ navigation }) => {
   const { storedCredentials, setStoredCredentials } =
     useContext(CredentialsContext);
 
@@ -52,6 +52,68 @@ const ProfileScreen = ({ navigation }) => {
           <TitleText mt={20} fs={40}>
             Tish
           </TitleText>
+          <TitleText mt={40} fs={25}>
+            Manage Spots
+          </TitleText>
+          <View>
+            <Pressable
+              onPress={() => navigation.navigate("New Spotsy Listing")}
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed ? "#f5f5f5" : white,
+                },
+                {
+                  flexDirection: "row",
+                  height: 60,
+                  borderBottomWidth: 0.2,
+                  marginTop: 25,
+                  alignItems: "center",
+                  paddingBottom: 10,
+                  paddingTop: 10,
+                  width: "100%",
+                },
+              ]}>
+              <Ionicons
+                name="ios-car-outline"
+                size={30}
+                style={{ marginRight: 20 }}
+              />
+              <Text style={{ fontSize: 18 }}>New Spotsy Listing</Text>
+              <Entypo
+                name="chevron-small-right"
+                size={30}
+                style={{ justifyContent: "flex-end", marginLeft: "auto" }}
+              />
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed ? "#f5f5f5" : white,
+                },
+                {
+                  flexDirection: "row",
+                  height: 60,
+                  borderBottomWidth: 0.2,
+                  marginTop: 25,
+                  alignItems: "center",
+                  paddingBottom: 10,
+                  paddingTop: 10,
+                  width: "100%",
+                },
+              ]}>
+              <Ionicons
+                name="list-outline"
+                size={30}
+                style={{ marginRight: 20 }}
+              />
+              <Text style={{ fontSize: 18 }}>My Spots</Text>
+              <Entypo
+                name="chevron-small-right"
+                size={30}
+                style={{ justifyContent: "flex-end", marginLeft: "auto" }}
+              />
+            </Pressable>
+          </View>
           <TitleText mt={40} fs={25}>
             Account Settings
           </TitleText>
@@ -213,4 +275,4 @@ const ProfileScreen = ({ navigation }) => {
   );
 };
 
-export default ProfileScreen;
+export default MenuScreen;

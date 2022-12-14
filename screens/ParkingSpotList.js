@@ -26,7 +26,7 @@ const ParkingSpotList = ({ navigation }) => {
   const [parkingSpots, setParkingSpots] = useState(data);
   const { storedCredentials, setStoredCredentials } =
     useContext(CredentialsContext);
-  console.log("storedCredentials", storedCredentials);
+  // console.log("storedCredentials", storedCredentials);
 
   const toggleFavorite = (listing_id) => {
     const newParkingSpots = parkingSpots.map((spot) => {
